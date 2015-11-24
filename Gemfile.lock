@@ -1,0 +1,22 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    attribute_struct (0.2.24)
+    bogo (0.1.30)
+      hashie
+      multi_json
+    hashie (3.4.3)
+    multi_json (1.11.2)
+    sparkle_formation (1.0.4)
+      attribute_struct (~> 0.2.2)
+      bogo
+      multi_json
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  sparkle_formation (~> 1.0.4)
+
+BUNDLED WITH
+   1.10.6
