@@ -111,27 +111,33 @@ SparkleFormation.new('qa') do
     chef_knife_user do
       type "String"
     end
-    #dynamic!(:chef_node, :key_name => "luis")
-    #[
-    #  :name => "core1",
-    #  :hostname => "core1",
-    #  :private_domain  => "core1",
-    #  :public_domain => "core1",
-    #  :developer => "core1",
-    #  :ami => "core1",
-    #  :key_name => "core1",
-    #  :chef_role => "core1",
-    #  :chef_databag_key => "core1",
-    #  :chef_bucket_iam_user_id => "core1",
-    #  :chef_bucket_iam_user_key => "core1",
-    #]
-
-    [:core1, :core2, :glue1, :api1, :sdp1].each do |inst_name|
-      dynamic!(:chef_node, inst_name, :key_name => "luis")
+    databag_key <<-EOH
+    KEYSTRING
+    EOH
+    [
+      {
+        :name => "core1",
+        :config => {
+          :hostname => ref!(:core1_hostname),
+          :private_domain  => ref!(:private_domain),
+          :public_domain => ref!(:public_domain),
+          :private_zone_id => ref!(:private_zone_id),
+          :public_zone_id => ref!(:public_zone_id),
+          :developer => ref!(:developer),
+          :ami => ref!(:base_ami),
+          :key_name => ref!(:key_name),
+          :chef_role => ref!(:core1_role),
+          :chef_databag_key => databag_key,
+          :chef_bucket_iam_user_id => ref!(:chef_bucket_iam_user_id),
+          :chef_bucket_iam_user_key => ref!(:chef_bucket_iam_user_key
+        }
+      }
+    ].each do |profile|
+      dynamic!(:chef_node, profile[:name], profile[:config])
       # external
-      dynamic!(:qa_record, inst_name, :key_name => "luis")
+      dynamic!(:qa_internal_record_set, profile[:name], profile[:config])
       # internal
-      dynamic!(:qa_record, inst_name, :key_name => "luis")
+      dynamic!(:qa_external_record_set, profile[:name], profile[:config])
     end
     #dynamic!(:chef_node, :core1)
     #dynamic!(:ec2_instance, :glue1) do
