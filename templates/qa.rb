@@ -112,22 +112,26 @@ SparkleFormation.new('qa') do
       type "String"
     end
     #dynamic!(:chef_node, :key_name => "luis")
-    [
-      :name => "core1",
-      :hostname => "core1",
-      :private_domain  => "core1",
-      :public_domain => "core1",
-      :developer => "core1",
-      :ami => "core1",
-      :key_name => "core1",
-      :chef_role => "core1",
-      :chef_databag_key => "core1",
-      :chef_bucket_iam_user_id => "core1",
-      :chef_bucket_iam_user_key => "core1",
-    ]
+    #[
+    #  :name => "core1",
+    #  :hostname => "core1",
+    #  :private_domain  => "core1",
+    #  :public_domain => "core1",
+    #  :developer => "core1",
+    #  :ami => "core1",
+    #  :key_name => "core1",
+    #  :chef_role => "core1",
+    #  :chef_databag_key => "core1",
+    #  :chef_bucket_iam_user_id => "core1",
+    #  :chef_bucket_iam_user_key => "core1",
+    #]
 
     [:core1, :core2, :glue1, :api1, :sdp1].each do |inst_name|
       dynamic!(:chef_node, inst_name, :key_name => "luis")
+      # external
+      dynamic!(:qa_record, inst_name, :key_name => "luis")
+      # internal
+      dynamic!(:qa_record, inst_name, :key_name => "luis")
     end
     #dynamic!(:chef_node, :core1)
     #dynamic!(:ec2_instance, :glue1) do
